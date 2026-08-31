@@ -1,0 +1,143 @@
+{
+  "ruleset_name": "Legal Metrology (Packaged Commodities) Rules, 2011",
+  "ruleset_version": "1.0",
+  "rules": [
+    {
+      "rule_id": "LMPC_6_1_a",
+      "source": "Rule 6(1)(a)",
+      "field": "manufacturer_name",
+      "description": "Name and address of the manufacturer (or packer/importer if applicable) must be declared.",
+      "check_type": "presence",
+      "required": true,
+      "error_message": "Manufacturer name is missing from the label."
+    },
+    {
+      "rule_id": "LMPC_6_1_a_addr",
+      "source": "Rule 6(1)(a) / Rule 10(1)",
+      "field": "manufacturer_address",
+      "description": "Complete address of the manufacturer must be declared (street, city/state or PIN code).",
+      "check_type": "presence_with_pincode",
+      "required": true,
+      "pincode_regex": "\\b\\d{6}\\b",
+      "error_message": "Manufacturer address is missing or does not contain a valid 6-digit PIN code."
+    },
+    {
+      "rule_id": "LMPC_6_1_b",
+      "source": "Rule 6(1)(b)",
+      "field": "commodity_name",
+      "description": "Common or generic name of the commodity must be declared.",
+      "check_type": "presence",
+      "required": true,
+      "error_message": "Common or generic name of the commodity is missing."
+    },
+    {
+      "rule_id": "LMPC_6_1_c_presence",
+      "source": "Rule 6(1)(c)",
+      "field": "net_quantity_value",
+      "description": "Net quantity of the commodity (by weight/measure/number) must be declared.",
+      "check_type": "presence",
+      "required": true,
+      "error_message": "Net quantity is missing from the label."
+    },
+    {
+      "rule_id": "LMPC_13_unit_standard",
+      "source": "Rule 13(2) & 13(3)",
+      "field": "net_quantity_unit",
+      "description": "Unit used must follow SI convention.",
+      "check_type": "unit_convention",
+      "required": true,
+      "rules_by_dimension": {
+        "weight": { "below_threshold": "g", "threshold_value": 1000, "at_or_above": "kg" },
+        "volume": { "below_threshold": "ml", "threshold_value": 1000, "at_or_above": "l" },
+        "length": { "below_threshold": "cm", "threshold_value": 100, "at_or_above": "m" }
+      },
+      "error_message": "Net quantity unit does not follow the required SI convention for its magnitude."
+    },
+    {
+      "rule_id": "LMPC_13_4_forbidden_count",
+      "source": "Rule 13(4)",
+      "field": "net_quantity_unit",
+      "description": "Counting terms like dozen, score, gross or great gross must not be used.",
+      "check_type": "forbidden_words",
+      "forbidden_list": ["dozen", "score", "gross", "great gross"],
+      "error_message": "Net quantity declaration uses a prohibited counting unit."
+    },
+    {
+      "rule_id": "LMPC_12_6_misleading_words",
+      "source": "Rule 12(6)",
+      "field": "net_quantity_value",
+      "description": "Quantity declaration must not contain exaggerated or misleading qualifiers.",
+      "check_type": "forbidden_words",
+      "forbidden_list": ["minimum", "not less than", "average", "about", "approximately", "approx"],
+      "error_message": "Net quantity declaration contains a misleading qualifier."
+    },
+    {
+      "rule_id": "LMPC_6_1_d",
+      "source": "Rule 6(1)(d)",
+      "field": "mfg_month_year",
+      "description": "Month and year of manufacture or pre-packing must be declared.",
+      "check_type": "date_format",
+      "required": true,
+      "accepted_formats": ["MM/YYYY", "MM-YYYY", "Month YYYY", "MonYYYY"],
+      "error_message": "Month and year of manufacture is missing or not in a recognizable format."
+    },
+    {
+      "rule_id": "LMPC_6_1_e_presence",
+      "source": "Rule 6(1)(e)",
+      "field": "mrp",
+      "description": "Retail sale price must be declared.",
+      "check_type": "presence",
+      "required": true,
+      "error_message": "MRP is missing from the label."
+    },
+    {
+      "rule_id": "LMPC_6_1_e_format",
+      "source": "Rule 2(m)",
+      "field": "mrp",
+      "description": "MRP must be printed in the required format including taxes wording.",
+      "check_type": "format_regex",
+      "format_regex": "(?i)(max(imum)?\\.?\\s*retail\\s*price|mrp)\\s*(rs\\.?|₹)\\s*\\d+(\\.\\d{1,2})?.*?(incl(usive|\\.)?\\s*(of)?\\s*(all\\s*)?taxes)",
+      "error_message": "MRP is present but not declared in the required format."
+    },
+    {
+      "rule_id": "LMPC_6_2_consumer_care",
+      "source": "Rule 6(2)",
+      "field": "consumer_care",
+      "description": "Consumer care details should be declared.",
+      "check_type": "presence",
+      "required": true,
+      "error_message": "Consumer care details are missing from the label."
+    },
+    {
+      "rule_id": "LMPC_9_4_language",
+      "source": "Rule 9(4)",
+      "field": "label_language",
+      "description": "Declarations must be in Hindi or English.",
+      "check_type": "language_check",
+      "allowed_languages": ["hi", "en"],
+      "error_message": "Mandatory declarations are not present in Hindi or English.",
+      "manual_review": true
+    },
+    {
+      "rule_id": "LMPC_6_1_c_number_unit",
+      "source": "Rule 13(5)(ii)",
+      "field": "net_quantity_unit",
+      "description": "Items sold by number should use the symbol N or U.",
+      "check_type": "enum_match",
+      "applies_when_sold_by": "number",
+      "allowed_values": ["N", "U"],
+      "error_message": "Items sold by number should use unit symbol N or U.",
+      "severity": "warning"
+    },
+    {
+      "rule_id": "LMPC_9_1_legibility",
+      "source": "Rule 9(1)(a)",
+      "field": "ocr_confidence",
+      "description": "Declaration must be legible and prominent.",
+      "check_type": "confidence_threshold",
+      "min_confidence": 0.75,
+      "error_message": "Text legibility is questionable and needs manual review.",
+      "severity": "warning"
+    }
+  ]
+}
