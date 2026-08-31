@@ -28,7 +28,7 @@ function checkFormatRegex(value, rule) {
   }
 
   const text = String(value);
-  const passed = new RegExp(rule.format_regex).test(text);
+  const passed = new RegExp(rule.format_regex, "i").test(text);
 
   if (!passed && deferredToPackRegex.test(text)) {
     return [false, deferredNote("MRP declaration")];

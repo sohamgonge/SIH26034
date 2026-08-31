@@ -96,7 +96,7 @@
       "field": "mrp",
       "description": "MRP must be printed in the required format including taxes wording.",
       "check_type": "format_regex",
-      "format_regex": "(?i)(max(imum)?\\.?\\s*retail\\s*price|mrp)\\s*(rs\\.?|₹)\\s*\\d+(\\.\\d{1,2})?.*?(incl(usive|\\.)?\\s*(of)?\\s*(all\\s*)?taxes)",
+      "format_regex": "(max(imum)?\\.?\\s*retail\\s*price|mrp)\\s*(rs\\.?|₹)\\s*\\d+(\\.\\d{1,2})?.*?(incl(usive|\\.)?\\s*(of)?\\s*(all\\s*)?taxes)",
       "error_message": "MRP is present but not declared in the required format."
     },
     {
